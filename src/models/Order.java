@@ -1,6 +1,7 @@
 package models;
 
 import java.util.List;
+import enums.OrderStatus;
 
 public class Order {
 
@@ -18,6 +19,9 @@ public class Order {
 
     private double totalAmount;
 
+    // Current stage of the food order
+    private OrderStatus status;
+
     public Order(
             int orderId,
             User user,
@@ -28,6 +32,9 @@ public class Order {
         this.user = user;
         this.restaurant = restaurant;
         this.items = items;
+
+        // Every newly created order starts as PLACED
+        this.status = OrderStatus.PLACED;
     }
 
     public int getOrderId() {
@@ -50,9 +57,7 @@ public class Order {
         return coupon;
     }
 
-    public void setCoupon(
-            Coupon coupon) {
-
+    public void setCoupon(Coupon coupon) {
         this.coupon = coupon;
     }
 
@@ -70,9 +75,15 @@ public class Order {
         return totalAmount;
     }
 
-    public void setTotalAmount(
-            double totalAmount) {
-
+    public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 }

@@ -1,0 +1,2902 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NamasteSeva | Engineering Documentation</title>
+
+    <!-- SAME FONT STYLE AS CUSTOMER PAGE -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600;1,700&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- MERMAID FOR ARCHITECTURE DIAGRAMS -->
+    <script type="module">
+        import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: "base",
+            securityLevel: "loose",
+
+            themeVariables: {
+                primaryColor: "#edf3ed",
+                primaryTextColor: "#285f48",
+                primaryBorderColor: "#8ba493",
+
+                secondaryColor: "#f5eee3",
+                tertiaryColor: "#fffdf9",
+
+                lineColor: "#a8844c",
+
+                fontFamily: "DM Sans"
+            }
+        });
+    </script>
+
+    <link rel="stylesheet" href="engineer.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVIGATION
+========================================================= -->
+
+<header class="engineering-nav">
+
+    <a href="customer.html" class="engineering-brand">
+
+        <span class="brand-symbol">✦</span>
+
+        <span>Namaste Seva</span>
+
+    </a>
+
+
+    <nav>
+
+        <a href="customer.html">
+            Home
+        </a>
+
+        <a href="engineer.html" class="active">
+            Engineering
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<main>
+
+
+<!-- =========================================================
+     ENGINEERING DOCUMENT HEADER
+========================================================= -->
+
+<section class="document-header">
+
+
+    <div class="document-title">
+
+
+        <span class="section-label">
+
+            ENGINEERING DOCUMENTATION · CURRENT IMPLEMENTATION
+
+        </span>
+
+
+        <h1>
+
+            NamasteSeva
+
+            <em>
+                System Architecture.
+            </em>
+
+        </h1>
+
+
+        <p>
+
+            A technical walkthrough of how the Java Low-Level Design
+            models food ordering, table reservations, party and catering
+            bookings, payment behavior, lifecycle management, and a
+            reusable notification subsystem.
+
+        </p>
+
+
+    </div>
+
+
+
+    <div class="document-meta">
+
+
+        <div>
+
+            <span>PROJECT TYPE</span>
+
+            <strong>
+                Java LLD
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>ARCHITECTURE</span>
+
+            <strong>
+                Object-Oriented
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>BUSINESS FLOWS</span>
+
+            <strong>
+                03
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>DESIGN PATTERNS</span>
+
+            <strong>
+                05
+            </strong>
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     01 — PROJECT OVERVIEW
+========================================================= -->
+
+<section class="engineering-section" id="overview">
+
+
+    <div class="section-heading">
+
+
+        <span class="section-number">
+            01
+        </span>
+
+
+        <div>
+
+
+            <span class="section-label">
+
+                PROJECT OVERVIEW
+
+            </span>
+
+
+            <h2>
+
+                What is NamasteSeva modelling?
+
+            </h2>
+
+
+            <p>
+
+                NamasteSeva models the internal domain architecture of
+                a restaurant platform where one application coordinates
+                three independent business workflows while keeping object
+                creation, business entities, lifecycle management,
+                interchangeable behavior, and notification responsibilities
+                separated.
+
+            </p>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- OVERVIEW INFORMATION -->
+
+
+    <div class="overview-layout">
+
+
+        <article class="overview-main">
+
+
+            <span class="card-label">
+
+                SYSTEM OBJECTIVE
+
+            </span>
+
+
+            <h3>
+
+                Translate real restaurant workflows into
+                maintainable Java objects.
+
+            </h3>
+
+
+            <p>
+
+                A real restaurant application contains multiple entities
+                and workflows. Customers select restaurants, browse menus,
+                create carts, make payments, place orders, reserve tables,
+                configure catering events, and receive notifications.
+
+            </p>
+
+
+            <p>
+
+                Instead of placing these responsibilities inside one large
+                class, NamasteSeva divides the system into domain models,
+                factories, managers, strategies, lifecycle enums, and a
+                separate notification subsystem.
+
+            </p>
+
+
+            <div class="architecture-chain">
+
+
+                <div>
+
+                    <span>01</span>
+
+                    <strong>
+                        Domain Models
+                    </strong>
+
+                    <small>
+                        Represent business entities and their relationships.
+                    </small>
+
+                </div>
+
+
+                <b>→</b>
+
+
+                <div>
+
+                    <span>02</span>
+
+                    <strong>
+                        Factories
+                    </strong>
+
+                    <small>
+                        Centralize creation of important business objects.
+                    </small>
+
+                </div>
+
+
+                <b>→</b>
+
+
+                <div>
+
+                    <span>03</span>
+
+                    <strong>
+                        Managers
+                    </strong>
+
+                    <small>
+                        Store objects and coordinate their lifecycle.
+                    </small>
+
+                </div>
+
+
+                <b>→</b>
+
+
+                <div>
+
+                    <span>04</span>
+
+                    <strong>
+                        Strategies
+                    </strong>
+
+                    <small>
+                        Provide interchangeable runtime behavior.
+                    </small>
+
+                </div>
+
+
+                <b>→</b>
+
+
+                <div>
+
+                    <span>05</span>
+
+                    <strong>
+                        Notifications
+                    </strong>
+
+                    <small>
+                        Build and deliver reusable notification messages.
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+        </article>
+
+
+
+        <aside class="scope-panel">
+
+
+            <span class="card-label">
+
+                CURRENT PROJECT SCOPE
+
+            </span>
+
+
+            <div class="scope-item">
+
+                <span>01</span>
+
+                <div>
+
+                    <strong>
+                        Console-Based Java Application
+                    </strong>
+
+                    <p>
+                        The current implementation focuses on backend
+                        domain modelling and LLD concepts.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="scope-item">
+
+                <span>02</span>
+
+                <div>
+
+                    <strong>
+                        In-Memory Object Management
+                    </strong>
+
+                    <p>
+                        Restaurants, orders, and bookings are managed
+                        using Java collections.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="scope-item">
+
+                <span>03</span>
+
+                <div>
+
+                    <strong>
+                        Pattern-Based Design
+                    </strong>
+
+                    <p>
+                        Factory, Singleton, Strategy, Decorator,
+                        and Observer concepts structure the system.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="scope-item">
+
+                <span>04</span>
+
+                <div>
+
+                    <strong>
+                        No Persistence Layer Yet
+                    </strong>
+
+                    <p>
+                        Spring Boot, REST APIs, databases, maps,
+                        and cloud deployment remain future enhancements.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </aside>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     02 — SYSTEM CAPABILITIES
+========================================================= -->
+
+<section class="engineering-section" id="capabilities">
+
+
+    <div class="section-heading">
+
+
+        <span class="section-number">
+            02
+        </span>
+
+
+        <div>
+
+
+            <span class="section-label">
+
+                SYSTEM CAPABILITIES
+
+            </span>
+
+
+            <h2>
+
+                What can the current LLD represent?
+
+            </h2>
+
+
+            <p>
+
+                The system contains three primary business workflows
+                supported by shared payment, management, lifecycle,
+                and notification components.
+
+            </p>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="capability-grid">
+
+
+        <!-- FOOD ORDERING -->
+
+
+        <article class="capability-card">
+
+
+            <div class="capability-top">
+
+                <span class="capability-number">
+                    01
+                </span>
+
+                <span class="implemented-pill">
+                    IMPLEMENTED
+                </span>
+
+            </div>
+
+
+            <h3>
+
+                Food Ordering & Delivery
+
+            </h3>
+
+
+            <p>
+
+                Models restaurant selection, menu browsing, cart creation,
+                coupon association, payment behavior, order creation,
+                delivery-partner assignment, and order lifecycle tracking.
+
+            </p>
+
+
+            <div class="compact-flow">
+
+                <span>Restaurant</span>
+
+                <b>→</b>
+
+                <span>Menu</span>
+
+                <b>→</b>
+
+                <span>Cart</span>
+
+                <b>→</b>
+
+                <span>Payment</span>
+
+                <b>→</b>
+
+                <span>Order</span>
+
+            </div>
+
+
+            <ul>
+
+                <li>Restaurant and menu modelling</li>
+
+                <li>Cart and CartItem relationships</li>
+
+                <li>Coupon association</li>
+
+                <li>Payment Strategy</li>
+
+                <li>Factory-based order creation</li>
+
+                <li>OrderManager lifecycle coordination</li>
+
+                <li>DeliveryPartner assignment</li>
+
+                <li>OrderStatus tracking</li>
+
+            </ul>
+
+
+        </article>
+
+
+
+        <!-- TABLE BOOKING -->
+
+
+        <article class="capability-card">
+
+
+            <div class="capability-top">
+
+                <span class="capability-number">
+                    02
+                </span>
+
+                <span class="implemented-pill">
+                    IMPLEMENTED
+                </span>
+
+            </div>
+
+
+            <h3>
+
+                Table Reservation
+
+            </h3>
+
+
+            <p>
+
+                Models table reservations independently from food orders.
+                The booking connects the customer and restaurant and is
+                managed through its own booking lifecycle.
+
+            </p>
+
+
+            <div class="compact-flow">
+
+                <span>User</span>
+
+                <b>→</b>
+
+                <span>Restaurant</span>
+
+                <b>→</b>
+
+                <span>TableBooking</span>
+
+                <b>→</b>
+
+                <span>Status</span>
+
+            </div>
+
+
+            <ul>
+
+                <li>User and Restaurant association</li>
+
+                <li>Independent TableBooking object</li>
+
+                <li>BookingManager storage</li>
+
+                <li>Booking lookup</li>
+
+                <li>BookingStatus updates</li>
+
+                <li>Notification subsystem support</li>
+
+            </ul>
+
+
+        </article>
+
+
+
+        <!-- PARTY BOOKING -->
+
+
+        <article class="capability-card">
+
+
+            <div class="capability-top">
+
+                <span class="capability-number">
+                    03
+                </span>
+
+                <span class="implemented-pill">
+                    IMPLEMENTED
+                </span>
+
+            </div>
+
+
+            <h3>
+
+                Party & Catering Booking
+
+            </h3>
+
+
+            <p>
+
+                Models event-oriented restaurant bookings where a customer
+                configures event information, catering requirements,
+                food preferences, staff services, and advance payment.
+
+            </p>
+
+
+            <div class="compact-flow">
+
+                <span>Event</span>
+
+                <b>→</b>
+
+                <span>Package</span>
+
+                <b>→</b>
+
+                <span>Staff</span>
+
+                <b>→</b>
+
+                <span>Booking</span>
+
+            </div>
+
+
+            <ul>
+
+                <li>EventDetails composition</li>
+
+                <li>CateringPackage selection</li>
+
+                <li>FoodPreference configuration</li>
+
+                <li>StaffService association</li>
+
+                <li>Advance payment storage</li>
+
+                <li>PartyBookingFactory creation</li>
+
+                <li>BookingManager lifecycle management</li>
+
+                <li>BookingStatus tracking</li>
+
+            </ul>
+
+
+        </article>
+
+
+    </div>
+
+
+
+    <!-- SHARED SYSTEM CAPABILITIES -->
+
+
+    <div class="shared-capabilities">
+
+
+        <div class="shared-title">
+
+
+            <span class="card-label">
+
+                SHARED INFRASTRUCTURE
+
+            </span>
+
+
+            <h3>
+
+                Components reused across business workflows
+
+            </h3>
+
+
+        </div>
+
+
+
+        <div class="shared-grid">
+
+
+            <div>
+
+                <span>PAYMENT</span>
+
+                <strong>
+                    Runtime Payment Strategies
+                </strong>
+
+                <p>
+                    Card, UPI, and Net Banking behaviors implement
+                    a common payment abstraction.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <span>MANAGEMENT</span>
+
+                <strong>
+                    Centralized Manager Components
+                </strong>
+
+                <p>
+                    Restaurants, orders, and bookings are maintained
+                    through focused manager classes.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <span>LIFECYCLE</span>
+
+                <strong>
+                    Controlled Status Values
+                </strong>
+
+                <p>
+                    OrderStatus and BookingStatus enums represent
+                    valid lifecycle states.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <span>NOTIFICATIONS</span>
+
+                <strong>
+                    Reusable Notification Subsystem
+                </strong>
+
+                <p>
+                    Notifications support message decoration,
+                    observable communication, and multiple channels.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     03 — SYSTEM ACTORS
+========================================================= -->
+
+<section class="engineering-section" id="actors">
+
+
+    <div class="section-heading">
+
+
+        <span class="section-number">
+            03
+        </span>
+
+
+        <div>
+
+
+            <span class="section-label">
+
+                SYSTEM ACTORS & RESPONSIBILITIES
+
+            </span>
+
+
+            <h2>
+
+                Who interacts with the system?
+
+            </h2>
+
+
+            <p>
+
+                The current LLD models business participants as domain
+                objects and represents administrative coordination through
+                centralized manager components.
+
+            </p>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="actors-layout">
+
+
+        <div class="actor-list">
+
+
+            <article class="actor-card">
+
+
+                <span class="actor-index">
+                    01
+                </span>
+
+
+                <div>
+
+                    <h3>
+                        Customer
+                    </h3>
+
+
+                    <p>
+
+                        Initiates food orders, table reservations,
+                        and party/catering bookings.
+
+                    </p>
+
+
+                    <div class="actor-tags">
+
+                        <span>Browse Restaurants</span>
+
+                        <span>Create Cart</span>
+
+                        <span>Select Payment</span>
+
+                        <span>Place Order</span>
+
+                        <span>Book Table</span>
+
+                        <span>Book Catering</span>
+
+                        <span>Receive Notifications</span>
+
+                    </div>
+
+
+                </div>
+
+
+            </article>
+
+
+
+            <article class="actor-card">
+
+
+                <span class="actor-index">
+                    02
+                </span>
+
+
+                <div>
+
+                    <h3>
+                        Restaurant
+                    </h3>
+
+
+                    <p>
+
+                        Represents the service provider participating
+                        in all three business workflows.
+
+                    </p>
+
+
+                    <div class="actor-tags">
+
+                        <span>Owns Menu</span>
+
+                        <span>Provides MenuItems</span>
+
+                        <span>Receives Orders</span>
+
+                        <span>Accepts Reservations</span>
+
+                        <span>Provides Catering</span>
+
+                    </div>
+
+
+                </div>
+
+
+            </article>
+
+
+
+            <article class="actor-card">
+
+
+                <span class="actor-index">
+                    03
+                </span>
+
+
+                <div>
+
+                    <h3>
+                        Delivery Partner
+                    </h3>
+
+
+                    <p>
+
+                        Participates specifically in the food-ordering
+                        workflow and can be assigned to an Order.
+
+                    </p>
+
+
+                    <div class="actor-tags">
+
+                        <span>Assigned to Order</span>
+
+                        <span>Food Delivery Workflow</span>
+
+                        <span>Order Relationship</span>
+
+                    </div>
+
+
+                </div>
+
+
+            </article>
+
+
+
+            <article class="actor-card">
+
+
+                <span class="actor-index">
+                    04
+                </span>
+
+
+                <div>
+
+                    <h3>
+                        Application / Manager Layer
+                    </h3>
+
+
+                    <p>
+
+                        Represents the current administrative coordination
+                        layer. The project does not yet implement a separate
+                        authenticated Admin portal.
+
+                    </p>
+
+
+                    <div class="actor-tags">
+
+                        <span>RestaurantManager</span>
+
+                        <span>OrderManager</span>
+
+                        <span>BookingManager</span>
+
+                        <span>Store Objects</span>
+
+                        <span>Lookup Objects</span>
+
+                        <span>Update Lifecycle</span>
+
+                    </div>
+
+
+                </div>
+
+
+            </article>
+
+
+        </div>
+
+
+
+        <!-- ACTOR RESPONSIBILITY TABLE -->
+
+
+        <div class="table-card">
+
+
+            <div class="table-heading">
+
+
+                <span class="card-label">
+
+                    RESPONSIBILITY MATRIX
+
+                </span>
+
+
+                <h3>
+
+                    Actor participation across the system
+
+                </h3>
+
+
+            </div>
+
+
+
+            <div class="table-scroll">
+
+
+                <table>
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Actor / Component</th>
+
+                            <th>Food Ordering</th>
+
+                            <th>Table Booking</th>
+
+                            <th>Party Booking</th>
+
+                            <th>Primary Responsibility</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        <tr>
+
+                            <td>
+                                <strong>Customer</strong>
+                            </td>
+
+                            <td>Creates order</td>
+
+                            <td>Creates reservation</td>
+
+                            <td>Configures event booking</td>
+
+                            <td>Initiates business workflows</td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                <strong>Restaurant</strong>
+                            </td>
+
+                            <td>Provides menu</td>
+
+                            <td>Receives reservation</td>
+
+                            <td>Provides catering service</td>
+
+                            <td>Core service provider</td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                <strong>DeliveryPartner</strong>
+                            </td>
+
+                            <td>Assigned to Order</td>
+
+                            <td>Not involved</td>
+
+                            <td>Not involved</td>
+
+                            <td>Food delivery association</td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                <strong>OrderManager</strong>
+                            </td>
+
+                            <td>Stores and updates orders</td>
+
+                            <td>Not involved</td>
+
+                            <td>Not involved</td>
+
+                            <td>Order lifecycle management</td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                <strong>BookingManager</strong>
+                            </td>
+
+                            <td>Not involved</td>
+
+                            <td>Stores table bookings</td>
+
+                            <td>Stores party bookings</td>
+
+                            <td>Booking lifecycle management</td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                <strong>Notification System</strong>
+                            </td>
+
+                            <td>Supports order messages</td>
+
+                            <td>Supports booking messages</td>
+
+                            <td>Supports event messages</td>
+
+                            <td>Reusable notification behavior</td>
+
+                        </tr>
+
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     CHUNK 2 WILL BE ADDED HERE
+
+     04 HIGH-LEVEL SYSTEM ARCHITECTURE
+
+     05 COMPLETE CUSTOMER SYSTEM FLOW
+========================================================= -->
+
+
+</main>
+
+
+</body>
+
+</html>
+<!-- =========================================================
+     04 — HIGH-LEVEL SYSTEM ARCHITECTURE
+========================================================= -->
+
+<section class="engineering-section" id="architecture">
+
+
+    <div class="section-heading">
+
+        <span class="section-number">
+            04
+        </span>
+
+
+        <div>
+
+            <span class="section-label">
+                HIGH-LEVEL SYSTEM ARCHITECTURE
+            </span>
+
+
+            <h2>
+                How is NamasteSeva structured internally?
+            </h2>
+
+
+            <p>
+
+                NamasteSeva separates domain objects, object creation,
+                application management, interchangeable behaviors, and
+                notifications into focused components.
+
+                The application layer coordinates the three business
+                workflows while the lower layers provide reusable
+                infrastructure.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         ARCHITECTURE DIAGRAM
+    ====================================================== -->
+
+
+    <div class="table-card">
+
+
+        <div class="table-heading">
+
+            <span class="card-label">
+                CURRENT JAVA LLD ARCHITECTURE
+            </span>
+
+            <h3>
+                Layered Component View
+            </h3>
+
+        </div>
+
+
+
+        <div class="mermaid">
+
+flowchart TB
+
+    USER["CUSTOMER / MAIN DRIVER"]
+
+    APP["APPLICATION COORDINATION"]
+
+    FOOD["FOOD ORDERING WORKFLOW"]
+
+    TABLE["TABLE BOOKING WORKFLOW"]
+
+    PARTY["PARTY & CATERING WORKFLOW"]
+
+
+    MODELS["DOMAIN MODELS<br/>User · Restaurant · Menu · Cart · Order · Bookings"]
+
+    FACTORIES["FACTORY LAYER<br/>OrderFactory · FoodOrderFactory · PartyBookingFactory"]
+
+    MANAGERS["MANAGER LAYER<br/>RestaurantManager · OrderManager · BookingManager"]
+
+    PAYMENT["PAYMENT STRATEGIES<br/>Card · UPI · Net Banking"]
+
+    LIFECYCLE["LIFECYCLE ENUMS<br/>OrderStatus · BookingStatus"]
+
+    NOTIFICATION["NOTIFICATION SUBSYSTEM<br/>Decorator · Observable · Strategy · Logger"]
+
+
+    USER --> APP
+
+
+    APP --> FOOD
+
+    APP --> TABLE
+
+    APP --> PARTY
+
+
+    FOOD --> MODELS
+
+    TABLE --> MODELS
+
+    PARTY --> MODELS
+
+
+    MODELS --> FACTORIES
+
+    FACTORIES --> MANAGERS
+
+
+    FOOD --> PAYMENT
+
+    PAYMENT --> FACTORIES
+
+
+    MANAGERS --> LIFECYCLE
+
+    MANAGERS --> NOTIFICATION
+
+
+    classDef actor fill:#285f48,color:#ffffff,stroke:#285f48,stroke-width:2px;
+
+    classDef application fill:#f4ead9,color:#6f5631,stroke:#a8844c,stroke-width:2px;
+
+    classDef workflow fill:#edf3ed,color:#285f48,stroke:#8ba493;
+
+    classDef layer fill:#fffdf9,color:#285f48,stroke:#a8844c;
+
+    classDef infrastructure fill:#f8f5ef,color:#403a35,stroke:#8ba493;
+
+
+    class USER actor;
+
+    class APP application;
+
+    class FOOD,TABLE,PARTY workflow;
+
+    class MODELS,FACTORIES,MANAGERS layer;
+
+    class PAYMENT,LIFECYCLE,NOTIFICATION infrastructure;
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         ARCHITECTURE READING GUIDE
+    ====================================================== -->
+
+
+    <div class="shared-capabilities">
+
+
+        <div class="shared-title">
+
+            <span class="card-label">
+                HOW TO READ THE ARCHITECTURE
+            </span>
+
+            <h3>
+                Responsibility moves from workflow to infrastructure.
+            </h3>
+
+        </div>
+
+
+
+        <div class="shared-grid">
+
+
+            <div>
+
+                <span>ENTRY POINT</span>
+
+                <strong>
+                    Main / Application Driver
+                </strong>
+
+                <p>
+                    Creates objects and demonstrates how the system
+                    components collaborate.
+                </p>
+
+            </div>
+
+
+
+            <div>
+
+                <span>BUSINESS WORKFLOWS</span>
+
+                <strong>
+                    Three Independent Flows
+                </strong>
+
+                <p>
+                    Food orders, table bookings, and catering bookings
+                    create different business objects.
+                </p>
+
+            </div>
+
+
+
+            <div>
+
+                <span>COORDINATION</span>
+
+                <strong>
+                    Factories + Managers
+                </strong>
+
+                <p>
+                    Factories create complex objects while managers
+                    store, retrieve, and update them.
+                </p>
+
+            </div>
+
+
+
+            <div>
+
+                <span>CROSS-CUTTING</span>
+
+                <strong>
+                    Payment + Notifications
+                </strong>
+
+                <p>
+                    Reusable behaviors support business workflows
+                    without becoming part of every domain class.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         LAYER RESPONSIBILITY TABLE
+    ====================================================== -->
+
+
+    <div class="table-card architecture-table">
+
+
+        <div class="table-heading">
+
+            <span class="card-label">
+                ARCHITECTURAL RESPONSIBILITIES
+            </span>
+
+            <h3>
+                Component boundaries in the current implementation
+            </h3>
+
+        </div>
+
+
+
+        <div class="table-scroll">
+
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>Layer / Component</th>
+
+                        <th>Responsibility</th>
+
+                        <th>Important Classes</th>
+
+                        <th>Does Not Own</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Domain Models</strong>
+                        </td>
+
+                        <td>
+                            Represent business data and object relationships.
+                        </td>
+
+                        <td>
+                            User, Restaurant, Menu, Cart, Order,
+                            TableBooking, PartyBooking
+                        </td>
+
+                        <td>
+                            Global collections or application coordination
+                        </td>
+
+                    </tr>
+
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Factories</strong>
+                        </td>
+
+                        <td>
+                            Encapsulate construction of important
+                            business objects.
+                        </td>
+
+                        <td>
+                            OrderFactory, FoodOrderFactory,
+                            PartyBookingFactory
+                        </td>
+
+                        <td>
+                            Object storage and lifecycle management
+                        </td>
+
+                    </tr>
+
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Managers</strong>
+                        </td>
+
+                        <td>
+                            Maintain application collections, perform
+                            lookups, and coordinate lifecycle updates.
+                        </td>
+
+                        <td>
+                            RestaurantManager, OrderManager,
+                            BookingManager
+                        </td>
+
+                        <td>
+                            UI rendering or payment implementation
+                        </td>
+
+                    </tr>
+
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Payment Strategies</strong>
+                        </td>
+
+                        <td>
+                            Provide interchangeable payment behavior
+                            through a common abstraction.
+                        </td>
+
+                        <td>
+                            PaymentStrategy, CardPayment,
+                            UPIPayment, NetBankingPayment
+                        </td>
+
+                        <td>
+                            Order creation and order storage
+                        </td>
+
+                    </tr>
+
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Lifecycle Enums</strong>
+                        </td>
+
+                        <td>
+                            Restrict order and booking state to known,
+                            valid values.
+                        </td>
+
+                        <td>
+                            OrderStatus, BookingStatus
+                        </td>
+
+                        <td>
+                            Lifecycle transition logic
+                        </td>
+
+                    </tr>
+
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Notification Subsystem</strong>
+                        </td>
+
+                        <td>
+                            Construct, decorate, publish, observe,
+                            and deliver notification messages.
+                        </td>
+
+                        <td>
+                            INotification, Decorators,
+                            NotificationObservable,
+                            NotificationEngine, Logger
+                        </td>
+
+                        <td>
+                            Core Order or Booking business data
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     05 — COMPLETE USER SYSTEM FLOW
+========================================================= -->
+
+
+<section class="engineering-section" id="system-flow">
+
+
+    <div class="section-heading">
+
+        <span class="section-number">
+            05
+        </span>
+
+
+        <div>
+
+            <span class="section-label">
+                COMPLETE SYSTEM FLOW
+            </span>
+
+
+            <h2>
+                How does a user request move through the LLD?
+            </h2>
+
+
+            <p>
+
+                The customer begins by selecting one of the three supported
+                services. Each service creates different domain objects and
+                follows a different internal workflow.
+
+                The resulting Order or Booking is then stored by the
+                corresponding manager, progresses through a lifecycle,
+                and can trigger the notification subsystem.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         COMPLETE USER FLOW DIAGRAM
+    ====================================================== -->
+
+
+    <div class="table-card">
+
+
+        <div class="table-heading">
+
+            <span class="card-label">
+                END-TO-END BUSINESS FLOW
+            </span>
+
+            <h3>
+                Customer Request → Domain Objects → Management → Notification
+            </h3>
+
+        </div>
+
+
+
+        <div class="mermaid">
+
+flowchart TB
+
+
+    USER["CUSTOMER"]
+
+    SELECT["SELECT SERVICE"]
+
+
+    FOOD["FOOD ORDERING"]
+
+    TABLE["TABLE RESERVATION"]
+
+    PARTY["PARTY / CATERING"]
+
+
+
+    RESTAURANT1["Restaurant + Menu"]
+
+    CART["Cart + CartItems"]
+
+    PAYMENT["PaymentStrategy"]
+
+    ORDER_FACTORY["FoodOrderFactory"]
+
+    ORDER["Order"]
+
+    ORDER_MANAGER["OrderManager"]
+
+    DELIVERY["DeliveryPartner"]
+
+    ORDER_STATUS["OrderStatus"]
+
+
+
+    RESTAURANT2["Restaurant"]
+
+    TABLE_BOOKING["TableBooking"]
+
+    BOOKING_MANAGER1["BookingManager"]
+
+    TABLE_STATUS["BookingStatus"]
+
+
+
+    EVENT["EventDetails"]
+
+    PACKAGE["CateringPackage"]
+
+    STAFF["StaffService"]
+
+    ADVANCE["Advance Payment"]
+
+    PARTY_FACTORY["PartyBookingFactory"]
+
+    PARTY_BOOKING["PartyBooking"]
+
+    BOOKING_MANAGER2["BookingManager"]
+
+    PARTY_STATUS["BookingStatus"]
+
+
+
+    NOTIFICATION["NOTIFICATION SUBSYSTEM"]
+
+    CHANNELS["EMAIL · SMS · POPUP"]
+
+
+
+    USER --> SELECT
+
+
+    SELECT --> FOOD
+
+    SELECT --> TABLE
+
+    SELECT --> PARTY
+
+
+
+    FOOD --> RESTAURANT1
+
+    RESTAURANT1 --> CART
+
+    CART --> PAYMENT
+
+    PAYMENT --> ORDER_FACTORY
+
+    ORDER_FACTORY --> ORDER
+
+    ORDER --> ORDER_MANAGER
+
+    ORDER_MANAGER --> DELIVERY
+
+    DELIVERY --> ORDER_STATUS
+
+
+
+    TABLE --> RESTAURANT2
+
+    RESTAURANT2 --> TABLE_BOOKING
+
+    TABLE_BOOKING --> BOOKING_MANAGER1
+
+    BOOKING_MANAGER1 --> TABLE_STATUS
+
+
+
+    PARTY --> EVENT
+
+    EVENT --> PACKAGE
+
+    PACKAGE --> STAFF
+
+    STAFF --> ADVANCE
+
+    ADVANCE --> PARTY_FACTORY
+
+    PARTY_FACTORY --> PARTY_BOOKING
+
+    PARTY_BOOKING --> BOOKING_MANAGER2
+
+    BOOKING_MANAGER2 --> PARTY_STATUS
+
+
+
+    ORDER_STATUS --> NOTIFICATION
+
+    TABLE_STATUS --> NOTIFICATION
+
+    PARTY_STATUS --> NOTIFICATION
+
+
+    NOTIFICATION --> CHANNELS
+
+
+
+    classDef actor fill:#285f48,color:#ffffff,stroke:#285f48,stroke-width:2px;
+
+    classDef selection fill:#f4ead9,color:#6f5631,stroke:#a8844c,stroke-width:2px;
+
+    classDef workflow fill:#edf3ed,color:#285f48,stroke:#8ba493;
+
+    classDef object fill:#fffdf9,color:#403a35,stroke:#b8aea1;
+
+    classDef factory fill:#f5eee3,color:#6f5631,stroke:#a8844c;
+
+    classDef manager fill:#eaf2ec,color:#285f48,stroke:#285f48;
+
+    classDef state fill:#f8f5ef,color:#6f5631,stroke:#a8844c;
+
+    classDef notify fill:#285f48,color:#ffffff,stroke:#285f48;
+
+
+    class USER actor;
+
+    class SELECT selection;
+
+    class FOOD,TABLE,PARTY workflow;
+
+    class RESTAURANT1,CART,PAYMENT,ORDER,DELIVERY,
+          RESTAURANT2,TABLE_BOOKING,
+          EVENT,PACKAGE,STAFF,ADVANCE,PARTY_BOOKING object;
+
+    class ORDER_FACTORY,PARTY_FACTORY factory;
+
+    class ORDER_MANAGER,BOOKING_MANAGER1,BOOKING_MANAGER2 manager;
+
+    class ORDER_STATUS,TABLE_STATUS,PARTY_STATUS state;
+
+    class NOTIFICATION,CHANNELS notify;
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         SYSTEM FLOW EXPLANATION
+    ====================================================== -->
+
+
+    <div class="flow-step-grid">
+
+
+        <article class="flow-step">
+
+
+            <span>
+                01
+            </span>
+
+
+            <div>
+
+                <strong>
+                    Customer selects a service.
+                </strong>
+
+
+                <p>
+
+                    The application supports three separate workflows:
+                    food ordering, table reservation, and party/catering
+                    booking.
+
+                </p>
+
+            </div>
+
+
+        </article>
+
+
+
+        <article class="flow-step">
+
+
+            <span>
+                02
+            </span>
+
+
+            <div>
+
+                <strong>
+                    Domain objects capture the request.
+                </strong>
+
+
+                <p>
+
+                    Objects such as Cart, Order, TableBooking,
+                    EventDetails, CateringPackage, and PartyBooking
+                    represent real business data.
+
+                </p>
+
+            </div>
+
+
+        </article>
+
+
+
+        <article class="flow-step">
+
+
+            <span>
+                03
+            </span>
+
+
+            <div>
+
+                <strong>
+                    Payment behavior executes where required.
+                </strong>
+
+
+                <p>
+
+                    Food ordering uses the PaymentStrategy abstraction
+                    to execute Card, UPI, or Net Banking payment behavior.
+
+                </p>
+
+            </div>
+
+
+        </article>
+
+
+
+        <article class="flow-step">
+
+
+            <span>
+                04
+            </span>
+
+
+            <div>
+
+                <strong>
+                    Factories create complex objects.
+                </strong>
+
+
+                <p>
+
+                    FoodOrderFactory creates Order objects while
+                    PartyBookingFactory creates PartyBooking objects
+                    from the references passed to them.
+
+                </p>
+
+            </div>
+
+
+        </article>
+
+
+
+        <article class="flow-step">
+
+
+            <span>
+                05
+            </span>
+
+
+            <div>
+
+                <strong>
+                    Managers store and coordinate objects.
+                </strong>
+
+
+                <p>
+
+                    OrderManager manages Order objects.
+                    BookingManager manages table and party bookings.
+                    RestaurantManager maintains restaurants.
+
+                </p>
+
+            </div>
+
+
+        </article>
+
+
+
+        <article class="flow-step">
+
+
+            <span>
+                06
+            </span>
+
+
+            <div>
+
+                <strong>
+                    Lifecycle values describe current state.
+                </strong>
+
+
+                <p>
+
+                    OrderStatus and BookingStatus enums restrict
+                    state to known values and allow managers to
+                    coordinate lifecycle changes.
+
+                </p>
+
+            </div>
+
+
+        </article>
+
+
+
+        <article class="flow-step">
+
+
+            <span>
+                07
+            </span>
+
+
+            <div>
+
+                <strong>
+                    Business events can create notifications.
+                </strong>
+
+
+                <p>
+
+                    Order and booking events can be converted into
+                    notification objects, decorated with additional
+                    information, and published to the notification system.
+
+                </p>
+
+            </div>
+
+
+        </article>
+
+
+
+        <article class="flow-step">
+
+
+            <span>
+                08
+            </span>
+
+
+            <div>
+
+                <strong>
+                    Notification strategies deliver the message.
+                </strong>
+
+
+                <p>
+
+                    The NotificationEngine delegates delivery behavior
+                    to EmailStrategy, SMSStrategy, or PopupStrategy
+                    without changing notification construction.
+
+                </p>
+
+            </div>
+
+
+        </article>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         THREE WORKFLOW COMPARISON
+    ====================================================== -->
+
+
+    <div class="table-card workflow-comparison">
+
+
+        <div class="table-heading">
+
+            <span class="card-label">
+                WORKFLOW COMPARISON
+            </span>
+
+            <h3>
+                How the three business flows differ
+            </h3>
+
+        </div>
+
+
+
+        <div class="table-scroll">
+
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>Concern</th>
+
+                        <th>Food Ordering</th>
+
+                        <th>Table Reservation</th>
+
+                        <th>Party / Catering</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Primary Result</strong>
+                        </td>
+
+                        <td>Order</td>
+
+                        <td>TableBooking</td>
+
+                        <td>PartyBooking</td>
+
+                    </tr>
+
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Main Inputs</strong>
+                        </td>
+
+                        <td>
+                            User, Restaurant, CartItems
+                        </td>
+
+                        <td>
+                            User, Restaurant, booking information
+                        </td>
+
+                        <td>
+                            User, Restaurant, EventDetails,
+                            CateringPackage, StaffService
+                        </td>
+
+                    </tr>
+
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Creation Component</strong>
+                        </td>
+
+                        <td>
+                            FoodOrderFactory
+                        </td>
+
+                        <td>
+                            Direct TableBooking creation
+                        </td>
+
+                        <td>
+                            PartyBookingFactory
+                        </td>
+
+                    </tr>
+
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Management Component</strong>
+                        </td>
+
+                        <td>
+                            OrderManager
+                        </td>
+
+                        <td>
+                            BookingManager
+                        </td>
+
+                        <td>
+                            BookingManager
+                        </td>
+
+                    </tr>
+
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Lifecycle Type</strong>
+                        </td>
+
+                        <td>
+                            OrderStatus
+                        </td>
+
+                        <td>
+                            BookingStatus
+                        </td>
+
+                        <td>
+                            BookingStatus
+                        </td>
+
+                    </tr>
+
+
+
+                    <tr>
+
+                        <td>
+                            <strong>DeliveryPartner</strong>
+                        </td>
+
+                        <td>
+                            Assigned to Order
+                        </td>
+
+                        <td>
+                            Not required
+                        </td>
+
+                        <td>
+                            Not used in current implementation
+                        </td>
+
+                    </tr>
+
+
+
+                    <tr>
+
+                        <td>
+                            <strong>Notification Support</strong>
+                        </td>
+
+                        <td>
+                            Order lifecycle messages
+                        </td>
+
+                        <td>
+                            Reservation lifecycle messages
+                        </td>
+
+                        <td>
+                            Event booking lifecycle messages
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     CHUNK 3 WILL BE ADDED HERE
+
+     06 FOOD ORDERING — COMPLETE INTERNAL ARCHITECTURE
+
+     ORDER CREATION FLOW
+
+     OBJECT REFERENCES
+
+     PAYMENT STRATEGY
+
+     FACTORY → MANAGER SEPARATION
+
+     DELIVERY PARTNER ASSIGNMENT
+
+     ORDER STATUS LIFECYCLE
+
+     CLASS RESPONSIBILITY TABLE
+========================================================= -->
+
+<!-- =========================================================
+     06 — DESIGN PATTERNS
+========================================================= -->
+
+<section class="engineering-section" id="patterns">
+
+    <div class="section-heading">
+
+        <span class="section-number">06</span>
+
+        <div>
+            <span class="section-label">DESIGN PATTERN MAP</span>
+
+            <h2>Patterns used in the current LLD.</h2>
+
+            <p>
+                NamasteSeva applies design patterns where responsibilities
+                need to be separated, behavior must remain interchangeable,
+                or infrastructure should be reusable across workflows.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="pattern-grid">
+
+        <article class="pattern-card">
+
+            <span class="pattern-type">CREATIONAL</span>
+
+            <h3>Factory Pattern</h3>
+
+            <p>
+                Separates creation of important business objects from
+                the application flow.
+            </p>
+
+            <div class="pattern-flow">
+                <span>Main</span>
+                <b>→</b>
+                <span>Factory</span>
+                <b>→</b>
+                <span>Business Object</span>
+            </div>
+
+            <div class="pattern-classes">
+                <code>OrderFactory</code>
+                <code>FoodOrderFactory</code>
+                <code>PartyBookingFactory</code>
+            </div>
+
+        </article>
+
+
+        <article class="pattern-card">
+
+            <span class="pattern-type">CREATIONAL</span>
+
+            <h3>Singleton Pattern</h3>
+
+            <p>
+                Ensures that selected centralized components expose
+                one shared instance to the application.
+            </p>
+
+            <div class="pattern-flow">
+                <span>Application</span>
+                <b>→</b>
+                <span>getInstance()</span>
+                <b>→</b>
+                <span>Shared Object</span>
+            </div>
+
+            <div class="pattern-classes">
+                <code>Logger</code>
+                <code>Manager classes where implemented as Singleton</code>
+            </div>
+
+        </article>
+
+
+        <article class="pattern-card">
+
+            <span class="pattern-type">BEHAVIORAL</span>
+
+            <h3>Strategy Pattern</h3>
+
+            <p>
+                Allows payment and notification delivery behavior
+                to change at runtime through common interfaces.
+            </p>
+
+            <div class="pattern-flow">
+                <span>Interface</span>
+                <b>→</b>
+                <span>Runtime Strategy</span>
+                <b>→</b>
+                <span>Execution</span>
+            </div>
+
+            <div class="pattern-classes">
+                <code>PaymentStrategy</code>
+                <code>CardPayment</code>
+                <code>UPIPayment</code>
+                <code>NetBankingPayment</code>
+                <code>INotificationStrategy</code>
+                <code>EmailStrategy</code>
+                <code>SMSStrategy</code>
+                <code>PopupStrategy</code>
+            </div>
+
+        </article>
+
+
+        <article class="pattern-card">
+
+            <span class="pattern-type">STRUCTURAL</span>
+
+            <h3>Decorator Pattern</h3>
+
+            <p>
+                Adds timestamp and signature information to notification
+                objects without modifying SimpleNotification.
+            </p>
+
+            <div class="pattern-flow">
+                <span>Simple</span>
+                <b>→</b>
+                <span>Timestamp</span>
+                <b>→</b>
+                <span>Signature</span>
+            </div>
+
+            <div class="pattern-classes">
+                <code>INotification</code>
+                <code>SimpleNotification</code>
+                <code>NotificationDecorator</code>
+                <code>TimestampDecorator</code>
+                <code>SignatureDecorator</code>
+            </div>
+
+        </article>
+
+
+        <article class="pattern-card">
+
+            <span class="pattern-type">BEHAVIORAL</span>
+
+            <h3>Observer Pattern</h3>
+
+            <p>
+                Allows registered observers to react when notification
+                state changes inside the observable component.
+            </p>
+
+            <div class="pattern-flow">
+                <span>Observable</span>
+                <b>→</b>
+                <span>notifyObservers()</span>
+                <b>→</b>
+                <span>Observers</span>
+            </div>
+
+            <div class="pattern-classes">
+                <code>IObservable</code>
+                <code>IObserver</code>
+                <code>NotificationObservable</code>
+                <code>NotificationEngine</code>
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     07 — CURRENT VS FUTURE ARCHITECTURE
+========================================================= -->
+
+<section class="engineering-section" id="roadmap">
+
+    <div class="section-heading">
+
+        <span class="section-number">07</span>
+
+        <div>
+            <span class="section-label">ARCHITECTURE EVOLUTION</span>
+
+            <h2>Current implementation to production architecture.</h2>
+
+            <p>
+                The current project intentionally focuses on Java, OOP,
+                Low-Level Design, object relationships, lifecycle management,
+                and design patterns. The same domain model can later evolve
+                into a backend application with APIs, persistence, external
+                integrations, and deployment infrastructure.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="evolution-grid">
+
+        <article class="architecture-state current-state">
+
+            <span class="architecture-status">CURRENT IMPLEMENTATION</span>
+
+            <h3>Java Low-Level Design</h3>
+
+            <div class="architecture-stack">
+
+                <span>Main Driver</span>
+                <b>↓</b>
+
+                <span>Domain Models</span>
+                <b>↓</b>
+
+                <span>Factories + Managers</span>
+                <b>↓</b>
+
+                <span>Payment Strategies</span>
+                <b>↓</b>
+
+                <span>Notification Engine</span>
+                <b>↓</b>
+
+                <span>In-Memory Java Collections</span>
+
+            </div>
+
+            <p>
+                The current implementation demonstrates how business
+                entities collaborate before introducing frameworks,
+                databases, APIs, or deployment infrastructure.
+            </p>
+
+        </article>
+
+
+        <div class="evolution-arrow">
+
+            <span>EVOLUTION PATH</span>
+            <b>→</b>
+
+        </div>
+
+
+        <article class="architecture-state future-state">
+
+            <span class="architecture-status">FUTURE ARCHITECTURE</span>
+
+            <h3>Production Backend System</h3>
+
+            <div class="future-layer-grid">
+
+                <div>
+                    <span>CLIENTS</span>
+                    <strong>
+                        Customer Web App · Restaurant Dashboard · Admin
+                    </strong>
+                </div>
+
+                <b>↓</b>
+
+                <div>
+                    <span>API LAYER</span>
+                    <strong>
+                        Spring Boot · REST APIs · Authentication
+                    </strong>
+                </div>
+
+                <b>↓</b>
+
+                <div>
+                    <span>SERVICES</span>
+                    <strong>
+                        Orders · Restaurants · Bookings · Payments · Notifications
+                    </strong>
+                </div>
+
+                <b>↓</b>
+
+                <div>
+                    <span>DATA & REAL-TIME</span>
+                    <strong>
+                        Database · Cache · Message Broker · WebSockets
+                    </strong>
+                </div>
+
+                <b>↓</b>
+
+                <div>
+                    <span>LOCATION & LOGISTICS</span>
+                    <strong>
+                        Maps · Nearby Search · ETA · Delivery Tracking
+                    </strong>
+                </div>
+
+                <b>↓</b>
+
+                <div>
+                    <span>DEPLOYMENT</span>
+                    <strong>
+                        Docker · CI/CD · AWS
+                    </strong>
+                </div>
+
+            </div>
+
+        </article>
+
+    </div>
+
+
+    <div class="future-feature-grid">
+
+        <div>
+            <span>BACKEND</span>
+            <strong>Spring Boot & REST APIs</strong>
+            <p>
+                Expose the current business workflows through HTTP endpoints.
+            </p>
+        </div>
+
+        <div>
+            <span>PERSISTENCE</span>
+            <strong>Database Integration</strong>
+            <p>
+                Replace in-memory collections with persistent storage.
+            </p>
+        </div>
+
+        <div>
+            <span>SECURITY</span>
+            <strong>Authentication & Authorization</strong>
+            <p>
+                Introduce customer, restaurant, delivery, and admin roles.
+            </p>
+        </div>
+
+        <div>
+            <span>MAPS</span>
+            <strong>Location & Delivery Tracking</strong>
+            <p>
+                Add nearby restaurant discovery, routes, ETA, and live tracking.
+            </p>
+        </div>
+
+        <div>
+            <span>EVENTS</span>
+            <strong>Asynchronous Notifications</strong>
+            <p>
+                Use message brokers for decoupled order and booking events.
+            </p>
+        </div>
+
+        <div>
+            <span>DEVOPS</span>
+            <strong>Docker · CI/CD · AWS</strong>
+            <p>
+                Containerize, automate delivery pipelines, and deploy the system.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     08 — ENGINEERING SUMMARY
+========================================================= -->
+
+<section class="engineering-summary">
+
+    <span class="section-label">ENGINEERING SUMMARY</span>
+
+    <h2>
+        One domain model.
+        <em>Three business workflows.</em>
+    </h2>
+
+    <p>
+        NamasteSeva demonstrates how object-oriented modelling and
+        Low-Level Design can structure a multi-service restaurant
+        application through focused domain models, factories, managers,
+        runtime strategies, lifecycle states, and reusable notification
+        components.
+    </p>
+
+
+    <div class="summary-tech-list">
+
+        <span>JAVA</span>
+        <span>OOP</span>
+        <span>ABSTRACTION</span>
+        <span>ENCAPSULATION</span>
+        <span>POLYMORPHISM</span>
+        <span>COMPOSITION</span>
+        <span>INTERFACES</span>
+        <span>ENUMS</span>
+        <span>FACTORY</span>
+        <span>SINGLETON</span>
+        <span>STRATEGY</span>
+        <span>DECORATOR</span>
+        <span>OBSERVER</span>
+
+    </div>
+
+</section>
